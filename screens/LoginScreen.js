@@ -18,11 +18,9 @@ const LoginScreen = () => {
 
         setIsLoading(true);
         try {
-            const response = await axios.post('http://localhost:80/api/v1/login', { email, password });
-            console.log('Resposta do login:', response.data);
+            const res = await axios.post('http://192.168.1.109:80/api/v1/login', { email: email, password: password });
             await new Promise(resolve => setTimeout(resolve, 1500));
-            const mockToken = 'mock-jwt-token-123456';
-        
+            const mockToken = res.data.token;
             await SecureStore.setItemAsync('token', mockToken);
         
             navigation.navigate('Dashboard');

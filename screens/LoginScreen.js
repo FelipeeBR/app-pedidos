@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native';
@@ -31,6 +31,16 @@ const LoginScreen = () => {
             setIsLoading(false);
         }
     };
+
+    useEffect(() => {
+        const checkToken = async () => {
+            const token = await SecureStore.getItemAsync('token');
+            if(!token) {
+                navigation.navigate('Dashboard');
+            }
+        };
+        checkToken();
+    }, []);
 
     return (
         <View style={styles.container}>

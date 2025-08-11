@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, Button } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
 
 const OrdersTable = ({ orders, onEdit, onDelete }) => {
     const confirmDelete = (orderId) => {
@@ -12,61 +12,65 @@ const OrdersTable = ({ orders, onEdit, onDelete }) => {
         );
     };
 
-    return (
-        <ScrollView horizontal={true} style={styles.container}>
-        <View>
-            <View style={[styles.row, styles.header]}>
-            <Text style={[styles.cell, styles.headerText, styles.smallColumn]}>ID</Text>
-            <Text style={[styles.cell, styles.headerText, styles.mediumColumn]}>Cliente</Text>
-            <Text style={[styles.cell, styles.headerText, styles.mediumColumn]}>Data</Text>
-            <Text style={[styles.cell, styles.headerText, styles.smallColumn]}>Status</Text>
-            <Text style={[styles.cell, styles.headerText, styles.smallColumn]}>Ações</Text>
-            </View>
+  return (
+    <ScrollView horizontal={true} style={styles.container}>
+      <View>
+          <View style={[styles.row, styles.header]}>
+          <Text style={[styles.cell, styles.headerText, styles.smallColumn]}>ID</Text>
+          <Text style={[styles.cell, styles.headerText, styles.mediumColumn]}>Cliente</Text>
+          <Text style={[styles.cell, styles.headerText, styles.mediumColumn]}>Data do pedido</Text>
+          <Text style={[styles.cell, styles.headerText, styles.mediumColumn]}>Data de entrega</Text>
+          <Text style={[styles.cell, styles.headerText, styles.smallColumn]}>Status</Text>
+          <Text style={[styles.cell, styles.headerText, styles.smallColumn]}>Ações</Text>
+          </View>
 
-            {orders.map(order => (
-            <View key={order.id} style={[styles.row, styles.bodyRow]}>
-                <Text style={[styles.cell, styles.smallColumn]}>{order.id}</Text>
-                <Text style={[styles.cell, styles.mediumColumn]}>{order.customer_name}</Text>
-                <Text style={[styles.cell, styles.mediumColumn]}>
-                {new Date(order.order_date).toLocaleDateString()}
-                </Text>
-                <Text style={[styles.cell, styles.smallColumn, 
-                            {color: getStatusColor(order.status)}]}>
-                {order.status}
-                </Text>
-                <View style={[styles.cell, styles.smallColumn, styles.actionsCell]}>
-                <TouchableOpacity 
-                    onPress={() => onEdit(order)}
-                    style={styles.actionButton}
-                >
-                    <Button title="Editar" />
-                </TouchableOpacity>
-                <TouchableOpacity 
-                    onPress={() => confirmDelete(order.id)}
-                    style={styles.actionButton}
-                >
-                    <Button title="Excluir"  />
-                </TouchableOpacity>
-                </View>
+          {orders.map(order => (
+          <View key={order.id} style={[styles.row, styles.bodyRow]}>
+            <Text style={[styles.cell, styles.smallColumn]}>{order.id}</Text>
+            <Text style={[styles.cell, styles.mediumColumn]}>{order.customer_name}</Text>
+            <Text style={[styles.cell, styles.mediumColumn]}>
+              {new Date(order.order_date).toLocaleDateString()}
+            </Text>
+            <Text style={[styles.cell, styles.mediumColumn]}>
+              {new Date(order.delivery_date).toLocaleDateString()}
+            </Text>
+            <Text style={[styles.cell, styles.smallColumn, 
+              {color: getStatusColor(order.status)}]}>
+              {order.status}
+            </Text>
+            <View style={[styles.cell, styles.actionsColumn]}>
+              <TouchableOpacity 
+                onPress={() => onEdit(order)}
+                style={[styles.actionButton, styles.editButton]}
+              >
+                <Text style={styles.buttonText}>Editar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                onPress={() => confirmDelete(order.id)}
+                style={[styles.actionButton, styles.deleteButton]}
+              >
+                <Text style={styles.buttonText}>Excluir</Text>
+              </TouchableOpacity>
             </View>
-            ))}
-        </View>
-        </ScrollView>
-    );
+          </View>
+          ))}
+      </View>
+    </ScrollView>
+  );
 };
 
 const getStatusColor = (status) => {
   switch(status.toLowerCase()) {
-    case 'pendente': return '#FF9800';
-    case 'concluído': return '#4CAF50';
-    case 'cancelado': return '#F44336';
+    case 'pending': return '#FF9800';
+    case 'delivered': return '#4CAF50';
+    case 'cancelled': return '#F44336';
     default: return '#607D8B';
   }
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 10,
+    marginVertical: 20,
   },
   row: {
     flexDirection: 'row',
@@ -95,12 +99,26 @@ const styles = StyleSheet.create({
   mediumColumn: {
     width: 120,
   },
-  actionsCell: {
+  actionsColumn: {
+    width: 160, 
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
   },
   actionButton: {
-    padding: 5,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+  },
+  editButton: {
+    backgroundColor: '#2196F3',
+  },
+  deleteButton: {
+    backgroundColor: '#F44336',
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 14,
   },
 });
 

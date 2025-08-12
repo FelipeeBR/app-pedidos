@@ -12,7 +12,6 @@ const DashboardScreen = () => {
   const [orders, setOrders] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
 
-
   const [customerName, setCustomerName] = useState('');
   const [orderDate, setOrderDate] = useState('');
   const [deliveryDate, setDeliveryDate] = useState('');
@@ -21,6 +20,10 @@ const DashboardScreen = () => {
   const handleLogout = async () => {
     await SecureStore.deleteItemAsync('token');
     navigation.navigate('Login');
+  };
+
+  const closeModal = () => {
+    setModalVisible(!isModalVisible);
   };
 
   const handleEdit = (order) => {
@@ -75,9 +78,13 @@ const DashboardScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bem-vindo</Text>
-      <Button title="Sair" onPress={handleLogout} />
-
+      <Text style={styles.title}>Pedidos</Text>
+      {/*<Button title="Sair" onPress={handleLogout} />*/}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.buttonOrder} onPress={handleLogout}>
+          <Text style={styles.buttonText}>Novo Pedido</Text>
+        </TouchableOpacity>
+      </View>
       <View style={{ flex: 1, padding: 16 }}>
         <OrdersTable 
           orders={orders} 
@@ -98,7 +105,6 @@ const DashboardScreen = () => {
                 onChangeText={setCustomerName}
                 autoCapitalize="none"
               />
-
               <Text>Data do pedido</Text>
               <TextInput
                 style={styles.input}
@@ -106,7 +112,9 @@ const DashboardScreen = () => {
                 value={orderDate}
                 onChangeText={setOrderDate}
                 autoCapitalize="none"
-              />
+              >
+
+              </TextInput>
 
               <Text>Data de entrega</Text>
               <TextInput
@@ -127,7 +135,10 @@ const DashboardScreen = () => {
               />
             </ScrollView>
             <View style={styles.modal_align}>
-              <TouchableOpacity onPress={() => handleEdit} style={styles.button_modal}>
+              <TouchableOpacity onPress={closeModal} style={styles.buttonCancel}>
+                <Text style={{ color: 'white' }}>Cancelar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleEdit} style={styles.buttonSave}>
                 <Text style={{ color: 'white' }}>Salvar</Text>
               </TouchableOpacity>
             </View>
@@ -172,11 +183,31 @@ const styles = StyleSheet.create({
   modal_align: {
     flexDirection: 'row', 
     justifyContent: 'flex-end',
+    gap: 3
   },
-  button_modal: {
+  buttonSave: {
     backgroundColor: '#2196F3',
     padding: 10,
     borderRadius: 5,
+  },
+  buttonCancel: {
+    backgroundColor: '#607D8B',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    width: '100%',
+  },
+  buttonOrder: {
+    backgroundColor: '#4CAF50',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
 

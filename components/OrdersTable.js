@@ -17,7 +17,7 @@ const OrdersTable = ({ orders, onEdit, onDelete }) => {
       <View>
           <View style={[styles.row, styles.header]}>
           <Text style={[styles.cell, styles.headerText, styles.smallColumn]}>ID</Text>
-          <Text style={[styles.cell, styles.headerText, styles.mediumColumn]}>Cliente</Text>
+          <Text style={[styles.cell, styles.headerText, styles.mediumColumn]}>Nome do Cliente</Text>
           <Text style={[styles.cell, styles.headerText, styles.mediumColumn]}>Data do pedido</Text>
           <Text style={[styles.cell, styles.headerText, styles.mediumColumn]}>Data de entrega</Text>
           <Text style={[styles.cell, styles.headerText, styles.smallColumn]}>Status</Text>
@@ -71,6 +71,7 @@ const getStatusColor = (status) => {
 const styles = StyleSheet.create({
   container: {
     marginVertical: 20,
+    backgroundColor: 'white'
   },
   row: {
     flexDirection: 'row',

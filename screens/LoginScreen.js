@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native';
 import axios from "axios";
@@ -32,16 +32,6 @@ const LoginScreen = () => {
         }
     };
 
-    useEffect(() => {
-        const checkToken = async () => {
-            const token = await SecureStore.getItemAsync('token');
-            if(!token) {
-                navigation.navigate('Dashboard');
-            }
-        };
-        checkToken();
-    }, []);
-
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Login</Text>
@@ -62,12 +52,10 @@ const LoginScreen = () => {
                 onChangeText={setPassword}
                 secureTextEntry
             />
-      
-            <Button
-                title={isLoading ? "Carregando..." : "Login"}
-                onPress={handleLogin}
-                disabled={isLoading}
-            />
+               
+            <TouchableOpacity onPress={handleLogin} style={styles.button}>
+                <Text style={styles.buttonText}>{isLoading ? "Carregando..." : "Login"}</Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -91,6 +79,15 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         paddingHorizontal: 10,
         borderRadius: 5,
+    },
+    button: {
+        backgroundColor: '#2196F3',
+        padding: 10,
+        borderRadius: 5,
+    },
+    buttonText: {
+        color: 'white',
+        textAlign: 'center',
     },
 });
 
